@@ -1,48 +1,12 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-
-type ApplicsType = {
-  "user_id": number,
-  "fio": string,
-  "fio_eng": string,
-  "birth_date": string,
-  "sex": string,
-  "post_address": string,
-  "email": string,
-  "phones": string,
-  "edu_institute": string,
-  "edu_institute_address": string,
-  "edu_specialization": string,
-  "uch_stepen": string,
-  "work_company": string,
-  "work_start_year": number,
-  "work_department": string,
-  "work_position": string,
-  "work_specialization": string,
-  "public_organizations": string,
-  "antok_city": string,
-  "science_interests": string,
-  "conf_topic": string,
-  "conf_section": string,
-  "conf_coauthors": string,
-  "participation_type": string,
-  "created_at": string,
-  "updated_at": string,
-  "need_compensation": boolean,
-  "inn": string,
-  "snils": string,
-  "registration": string,
-  "phone_work": string,
-  "phone_home": string,
-  "uch_zvanie": string,
-  "work_city": string,
-  "work_country": string,
-  "acad_position": string,
-  "work_company_short": string,
-  "need_hotel": string,
-  "birth_year": 2000
-}
+import { TApplic } from '../../types/TApplic';
+import CreateApplic from './components/CreateApplic';
+import { Button, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
+import EditIcon from '@mui/icons-material/Edit';
+import ApplicItem from './components/ApplicItem';
 
 const applic = {
   "user_id": 1,
@@ -86,148 +50,421 @@ const applic = {
   "birth_year": 2000
 }
 
-function App() {
-  const [applications, setApplications] = React.useState<ApplicsType[]>([])
-  const [open, setOpen] = React.useState(false)
+const App = () => {
+  const [applications, setApplications] = useState<TApplic[]>([])
+  const [applicEdit, setApplicEdit] = useState<TApplic>()
+
+
+
   const applicItem = Object.keys(applic)
 
-  const fetchData = async () => {
-    const response = await axios.get("http://localhost:8000/api/applics")
-    setApplications(response.data)
-  }
-  const getApplics = () => {
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get("http://localhost:8000/api/applics")
+      setApplications(response.data)
+    }
+
     fetchData()
-    setOpen(!open)
+  }, [applications])
+
+  const handleEditApplic = (id: any) => {
+    const app = applications.find(a => a.user_id === id)
+    setApplicEdit(app)
+  }
+
+  const deleteApplic = async (id: number) => {
+    await axios.delete(`http://localhost:8000/api/applics/${id}`)
   }
 
 
   return (
     <div className="App">
-      <button onClick={getApplics}>Получить заявки</button>
-      {open &&
-        <div className='table__element'>
-          <table width="100%">
-            <tbody>
-              <tr>
+      <Container maxWidth="lg" sx={{ m: 3, p: 2 }}>
+        <Typography variant='h3' gutterBottom>
+          Список всех заявок
+        </Typography>
+        <TableContainer component={Paper} >
+          <Table stickyHeader >
+            <TableHead  >
+              <TableRow>
+                <TableCell >
+                  Delete
+                </TableCell>
+                <TableCell >
+                  Edit
+                </TableCell>
                 {applicItem.map(val => (
-                  <th>{val}</th>
+                  <TableCell key={val} >
+                    {val}
+                  </TableCell>
                 ))}
-              </tr>
-
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {applications.map((el) => (
-                <tr key={el.user_id}>
-                  <td>
-                    <div >
-                      {el.user_id}
-                    </div>
-                  </td>
-                  <td>
-                    <div >
-                      {el.fio}
-                    </div>
-                  </td>
-                  <td>
-                    <div >{el.fio_eng}</div>
-                  </td>
-                  <td>
-                    <div >{el.birth_date}</div>
-                  </td>
-                  <td>
-                    <div >
-                      {el.sex}
-                    </div>
-                  </td>
-                  <td>
-                    <div >
-                      {el.post_address}
-                    </div>
-                  </td>
-                  <td>
-                    <div >
-                      {el.email}
-                    </div>
-                  </td>
-                  <td>
-                    <div >
-                      {el.phones}
-                    </div>
-                  </td>
-                  <td>
-                    <div >
-                      {el.edu_institute}
-                    </div>
-                  </td>
-                  <td>
-                    <div >
-                      {el.edu_institute_address}
-                    </div>
-                  </td>
-                  <td>
-                    <div >
-                      {el.edu_specialization}
-                    </div>
-                  </td>
-                  <td>
-                    <div >
-                      {el.uch_stepen}
-                    </div>
-                  </td>
-                  <td>
-                    <div >
-                      {el.work_company}
-                    </div>
-                  </td>
-                  <td>
-                    <div >
-                      {el.work_start_year}
-                    </div>
-                  </td>
-                  <td>
-                    <div >
-                      {el.work_department}
-                    </div>
-                  </td>
-                  <td>
-                    <div >
-                      {el.work_position}
-                    </div>
-                  </td>
-                  <td>
-                    <div >
-                      {el.work_specialization}
-                    </div>
-                  </td>
-                  <td><div >{el.public_organizations}</div></td>
-                  <td><div>{el.antok_city}</div></td>
-                  <td><div>{el.science_interests}</div></td>
-                  <td><div>{el.conf_topic}</div></td>
-                  <td><div>{el.conf_section}</div></td>
-                  <td><div>{el.conf_coauthors}</div></td>
-                  <td><div>{el.participation_type}</div></td>
-                  <td><div>{el.created_at}</div></td>
-                  <td><div>{el.updated_at}</div></td>
-                  <td><div>{el.need_compensation}</div></td>
-                  <td><div>{el.inn}</div></td>
-                  <td><div>{el.snils}</div></td>
-                  <td><div>{el.registration}</div></td>
-                  <td><div>{el.phone_work}</div></td>
-                  <td><div>{el.phone_home}</div></td>
-                  <td><div>{el.uch_zvanie}</div></td>
-                  <td><div>{el.work_city}</div></td>
-                  <td><div>{el.work_country}</div></td>
-                  <td><div>{el.acad_position}</div></td>
-                  <td><div>{el.work_company_short}</div></td>
-                  <td><div>{el.need_hotel}</div></td>
-                  <td><div>{el.birth_year}</div></td>
-                </tr>
-              )
-              )}
-            </tbody>
-          </table>
-        </div>
-      }
+                <TableRow key={el.user_id}>
+                  <TableCell onClick={() => deleteApplic(el.user_id)}>
+                    <DeleteForeverRoundedIcon color="success" />
+                  </TableCell>
+                  <TableCell onClick={() => handleEditApplic(el.user_id)}>
+                    <EditIcon color="success" />
+                  </TableCell>
+                  <TableCell>{el.user_id}</TableCell>
+                  <TableCell>{el.fio}</TableCell>
+                  <TableCell>{el.fio_eng}</TableCell>
+                  <TableCell>{el.birth_date}</TableCell>
+                  <TableCell>{el.sex}</TableCell>
+                  <TableCell>{el.post_address}</TableCell>
+                  <TableCell>{el.email}</TableCell>
+                  <TableCell>{el.phones}</TableCell>
+                  <TableCell>{el.edu_institute}</TableCell>
+                  <TableCell>{el.edu_institute_address}</TableCell>
+                  <TableCell>{el.edu_specialization}</TableCell>
+                  <TableCell>{el.uch_stepen}</TableCell>
+                  <TableCell>{el.work_company}</TableCell>
+                  <TableCell>{el.work_start_year}</TableCell>
+                  <TableCell>{el.work_department}</TableCell>
+                  <TableCell>{el.work_position}</TableCell>
+                  <TableCell>{el.work_specialization}</TableCell>
+                  <TableCell>{el.public_organizations}</TableCell>
+                  <TableCell>{el.antok_city}</TableCell>
+                  <TableCell>{el.science_interests}</TableCell>
+                  <TableCell>{el.conf_topic}</TableCell>
+                  <TableCell>{el.conf_section}</TableCell>
+                  <TableCell>{el.conf_coauthors}</TableCell>
+                  <TableCell>{el.participation_type}</TableCell>
+                  <TableCell>{el.created_at}</TableCell>
+                  <TableCell>{el.updated_at}</TableCell>
+                  <TableCell>{el.need_compensation}</TableCell>
+                  <TableCell>{el.inn}</TableCell>
+                  <TableCell>{el.snils}</TableCell>
+                  <TableCell>{el.registration}</TableCell>
+                  <TableCell>{el.phone_work}</TableCell>
+                  <TableCell>{el.phone_home}</TableCell>
+                  <TableCell>{el.uch_zvanie}</TableCell>
+                  <TableCell>{el.work_city}</TableCell>
+                  <TableCell>{el.work_country}</TableCell>
+                  <TableCell>{el.acad_position}</TableCell>
+                  <TableCell>{el.work_company_short}</TableCell>
+                  <TableCell>{el.need_hotel}</TableCell>
+                  <TableCell>{el.birth_year}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <CreateApplic />
 
-    </div>
+        {/* <TextField
+          autoFocus
+          label={"ФИО"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, fio: e.target.value })}
+          value={applicEdit?.fio} />
+        <TextField
+          label={"ФИО на английском"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, fio_eng: e.target.value })}
+          value={applicEdit?.fio_eng} />
+        <TextField
+          label={"День Рождения"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, birth_date: e.target.value })}
+          value={applicEdit?.birth_date} />
+        <TextField
+          label={"Пол"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, sex: e.target.value })}
+          value={applicEdit?.sex} />
+        <TextField
+          label={"Адресс"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, post_address: e.target.value })}
+          value={applicEdit?.post_address} />
+        <TextField
+          label={"Email"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, email: e.target.value })}
+          value={applicEdit?.email} />
+        <TextField
+          label={"Телефон"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, phones: e.target.value })}
+          value={applicEdit?.phones} />
+        <TextField
+          label={"Университет"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, edu_institute: e.target.value })}
+          value={applicEdit?.edu_institute} />
+        <TextField
+          label={"Адрес университета"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, edu_institute_address: e.target.value })}
+          value={applicEdit?.edu_institute_address} />
+        <TextField
+          label={"Специализация в университете"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, edu_specialization: e.target.value })}
+          value={applicEdit?.edu_specialization} />
+        <TextField
+          label={"Ученая степень"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, uch_stepen: e.target.value })}
+          value={applicEdit?.uch_stepen} />
+        <TextField
+          label={"Место работы"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, work_company: e.target.value })}
+          value={applicEdit?.work_company} />
+        <TextField
+          label={"Год начало работы"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, work_start_year: Number(e.target.value) })}
+          value={applicEdit?.work_start_year} />
+        <TextField
+          label={"Отдел"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, work_department: e.target.value })}
+          value={applicEdit?.work_department} />
+        <TextField
+          label={"Рабочая позиция"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, work_position: e.target.value })}
+          value={applicEdit?.work_position} />
+        <TextField
+          label={"Рабочая специализация"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, work_specialization: e.target.value })}
+          value={applicEdit?.work_specialization} />
+        <TextField
+          label={"Публичная организация"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, public_organizations: e.target.value })}
+          value={applicEdit?.public_organizations} />
+        <TextField
+          label={"АНТОК city"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, antok_city: e.target.value })}
+          value={applicEdit?.antok_city} />
+        <TextField
+          label={"Научные интересы"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, science_interests: e.target.value })}
+          value={applicEdit?.science_interests} />
+        <TextField
+          label={"Тема конференции"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, conf_topic: e.target.value })}
+          value={applicEdit?.conf_topic} />
+        <TextField
+          label={"Секция конференции"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, conf_section: e.target.value })}
+          value={applicEdit?.conf_section} />
+        <TextField
+          label={"Соавторы конференции"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, conf_coauthors: e.target.value })}
+          value={applicEdit?.conf_coauthors} />
+        <TextField
+          label={"Тип участия"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, participation_type: e.target.value })}
+          value={applicEdit?.participation_type} />
+        <TextField
+          label={"Создана"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, created_at: e.target.value })}
+          value={applicEdit?.created_at} />
+        <TextField
+          label={"Обновлена"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, updated_at: e.target.value })}
+          value={applicEdit?.updated_at} />
+        <TextField
+          label={"Нужна компенсация"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, need_compensation: Boolean(e.target.value) })}
+          value={applicEdit?.need_compensation} />
+        <TextField
+          label={"ИНН"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, inn: e.target.value })}
+          value={applicEdit?.inn} />
+        <TextField
+          label={"СНИЛС"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, snils: e.target.value })}
+          value={applicEdit?.snils} />
+        <TextField
+          label={"Регистрация"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, registration: e.target.value })}
+          value={applicEdit?.registration} />
+        <TextField
+          label={"Рабочий телефон"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, phone_work: e.target.value })}
+          value={applicEdit?.phone_work} />
+        <TextField
+          label={"Домашний телефон"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, phone_home: e.target.value })}
+          value={applicEdit?.phone_home} />
+        <TextField
+          label={"Ученое звание"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, uch_zvanie: e.target.value })}
+          value={applicEdit?.uch_zvanie} />
+        <TextField
+          label={"Город работы"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, work_city: e.target.value })}
+          value={applicEdit?.work_city} />
+        <TextField
+          label={"Страна работы"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, work_country: e.target.value })}
+          value={applicEdit?.work_country} />
+        <TextField
+          label={"ACAD позиция"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, acad_position: e.target.value })}
+          value={applicEdit?.acad_position} />
+        <TextField
+          label={"Место работы сокращенно"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, work_company_short: e.target.value })}
+          value={applicEdit?.work_company_short} />
+        <TextField
+          label={"Нужен отель"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, need_hotel: e.target.value })}
+          value={applicEdit?.need_hotel} />
+        <TextField
+          label={"Год рождения"}
+          required
+          variant="standard"
+          fullWidth
+          margin='normal'
+          onChange={(e) => setApplicEdit({ ...applicEdit, birth_year: Number(e.target.value) })}
+          value={applicEdit?.birth_year} /> */}
+
+
+      </Container>
+    </div >
   );
 }
 

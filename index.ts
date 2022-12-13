@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
-import { v4 as uuidv4 } from 'uuid';
+import { TApplic } from './types/TApplic';
 
 dotenv.config();
 
@@ -10,49 +10,7 @@ const app: Express = express();
 app.use(express.json());
 app.use(cors());
 
-type ApplicsType = {
-    "user_id": number,
-    "fio": string,
-    "fio_eng": string,
-    "birth_date": string,
-    "sex": string,
-    "post_address": string,
-    "email": string,
-    "phones": string,
-    "edu_institute": string,
-    "edu_institute_address": string,
-    "edu_specialization": string,
-    "uch_stepen": string,
-    "work_company": string,
-    "work_start_year": number,
-    "work_department": string,
-    "work_position": string,
-    "work_specialization": string,
-    "public_organizations": string,
-    "antok_city": string,
-    "science_interests": string,
-    "conf_topic": string,
-    "conf_section": string,
-    "conf_coauthors": string,
-    "participation_type": string,
-    "created_at": string,
-    "updated_at": string,
-    "need_compensation": boolean,
-    "inn": string,
-    "snils": string,
-    "registration": string,
-    "phone_work": string,
-    "phone_home": string,
-    "uch_zvanie": string,
-    "work_city": string,
-    "work_country": string,
-    "acad_position": string,
-    "work_company_short": string,
-    "need_hotel": string,
-    "birth_year": 2000
-}
-
-let applics: ApplicsType[] = [
+let applics: TApplic[] = [
     {
         "user_id": 1,
         "fio": "Тест Тестович",
@@ -151,10 +109,11 @@ app.get("/api/applics", async (req: Request, res: Response) => {
 app.post("/api/applics", async (req: Request, res: Response) => {
     try {
         const body = req.body
-        const userId = Number(uuidv4());
-        const newApplic: ApplicsType = {
-            user_id: userId,                   /* перезаписывание id можно предотвратить только прописав все поля? */
+        const userId = applics.length + 1;
+        const newApplic: TApplic = {
             ...body,
+            user_id: userId,
+
         }
         applics = applics.concat(newApplic)
         res.json(newApplic)
@@ -178,14 +137,11 @@ app.get("/api/applics/:id", async (req: Request, res: Response) => {
     }
 })
 
-// PATCH неправильно
+// PATCH
 app.patch('/api/applics/:id', async (req: Request, res: Response) => {
     try {
-        const id = Number(req.params.id)
         const body = req.body
-
-        const updatedApplic: ApplicsType = {
-            user_id: id,
+        const updatedApplic: TApplic = {
             ...body,
         }
         applics = applics.map((a) => a.user_id !== updatedApplic.user_id ? a : updatedApplic)

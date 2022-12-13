@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const uuid_1 = require("uuid");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -117,8 +116,8 @@ app.get("/api/applics", (req, res) => __awaiter(void 0, void 0, void 0, function
 app.post("/api/applics", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const body = req.body;
-        const userId = Number((0, uuid_1.v4)());
-        const newApplic = Object.assign({ user_id: userId }, body);
+        const userId = applics.length + 1;
+        const newApplic = Object.assign(Object.assign({}, body), { user_id: userId });
         applics = applics.concat(newApplic);
         res.json(newApplic);
     }
@@ -139,12 +138,11 @@ app.get("/api/applics/:id", (req, res) => __awaiter(void 0, void 0, void 0, func
         console.log("ERROR", err);
     }
 }));
-// PATCH неправильно
+// PATCH
 app.patch('/api/applics/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const id = Number(req.params.id);
         const body = req.body;
-        const updatedApplic = Object.assign({ user_id: id }, body);
+        const updatedApplic = Object.assign({}, body);
         applics = applics.map((a) => a.user_id !== updatedApplic.user_id ? a : updatedApplic);
         res.json(updatedApplic);
     }

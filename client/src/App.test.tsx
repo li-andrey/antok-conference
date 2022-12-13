@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
-import FirstComponent from './components/FirstComponent';
+import FirstComponent from './components/ApplicItem';
 
 
 
@@ -17,11 +17,6 @@ test('renders react logo', () => {
   expect(imgElement).toBeInTheDocument();
 })
 
-test('renders FirstComponent', () => {
-  render(<FirstComponent />);
-  const textElement = screen.getByText(/FirstComponent/i);
-  expect(textElement).toBeInTheDocument();
-})
 
 test('сложение положительных чисел не равно нулю', () => {
   for (let a = 1; a < 10; a++) {
