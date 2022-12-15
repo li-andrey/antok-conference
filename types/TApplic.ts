@@ -39,3 +39,5 @@ export type TApplic = {
     "need_hotel": string,
     "birth_year": number
 }
+
+
