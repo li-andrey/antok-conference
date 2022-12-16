@@ -6,6 +6,7 @@ import { Box, Button, Card, Container, Paper, Table, TableBody, TableCell, Table
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import EditIcon from '@mui/icons-material/Edit';
 import { InitialApplic } from './types/InitialApplic';
+// import CreateApplic from './components/CreateApplic';
 
 const applic = {
   "user_id": 1,
@@ -181,6 +182,7 @@ const App = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        {/* <CreateApplic/> */}
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Card sx={{ maxWidth: 600, m: 5, p: 5 }}>
             <Typography variant='h4'>Создание заявки</Typography>
