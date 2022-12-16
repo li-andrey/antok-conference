@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { TApplic } from '../../types/TApplic';
-import { Box, Button, Card, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import EditIcon from '@mui/icons-material/Edit';
 import { InitialApplic } from './types/InitialApplic';
@@ -110,7 +110,7 @@ const App = () => {
     <div className="App">
       <Container maxWidth="lg" sx={{ m: 3, p: 2 }}>
         <Typography variant='h4' gutterBottom>
-          Список всех заявок
+          Все заявки
         </Typography>
         <TableContainer component={Paper} >
           <Table stickyHeader >
@@ -132,11 +132,15 @@ const App = () => {
             <TableBody>
               {applications.map((el) => (
                 <TableRow key={el.user_id}>
-                  <TableCell onClick={() => deleteApplic(el.user_id)}>
-                    <DeleteForeverRoundedIcon color="success" />
+                  <TableCell sx={{ pl: 0 }}>
+                    <Button onClick={() => deleteApplic(el.user_id)}>
+                      <DeleteForeverRoundedIcon color="success" />
+                    </Button>
                   </TableCell>
-                  <TableCell onClick={() => handleEditApplic(el.user_id)}>
-                    <EditIcon color="success" />
+                  <TableCell sx={{ pl: 0 }}>
+                    <Button onClick={() => handleEditApplic(el.user_id)}>
+                      <EditIcon color="success" />
+                    </Button>
                   </TableCell>
                   <TableCell>{el.user_id}</TableCell>
                   <TableCell>{el.fio}</TableCell>
@@ -184,324 +188,326 @@ const App = () => {
         </TableContainer>
         {/* <CreateApplic/> */}
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Card sx={{ maxWidth: 600, m: 5, p: 5 }}>
+          <Card sx={{ maxWidth: 600, m: 7, p: 7 }}>
             <Typography variant='h4'>Создание заявки</Typography>
-            <TextField
-              autoFocus
-              label={"ФИО"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, fio: e.target.value })}
-              value={applicEdit?.fio} />
-            <TextField
-              label={"ФИО на английском"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, fio_eng: e.target.value })}
-              value={applicEdit?.fio_eng} />
-            <TextField
-              label={"День Рождения"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, birth_date: e.target.value })}
-              value={applicEdit?.birth_date} />
-            <TextField
-              label={"Пол"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, sex: e.target.value })}
-              value={applicEdit?.sex} />
-            <TextField
-              label={"Адресс"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, post_address: e.target.value })}
-              value={applicEdit?.post_address} />
-            <TextField
-              label={"Email"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, email: e.target.value })}
-              value={applicEdit?.email} />
-            <TextField
-              label={"Телефон"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, phones: e.target.value })}
-              value={applicEdit?.phones} />
-            <TextField
-              label={"Университет"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, edu_institute: e.target.value })}
-              value={applicEdit?.edu_institute} />
-            <TextField
-              label={"Адрес университета"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, edu_institute_address: e.target.value })}
-              value={applicEdit?.edu_institute_address} />
-            <TextField
-              label={"Специализация в университете"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, edu_specialization: e.target.value })}
-              value={applicEdit?.edu_specialization} />
-            <TextField
-              label={"Ученая степень"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, uch_stepen: e.target.value })}
-              value={applicEdit?.uch_stepen} />
-            <TextField
-              label={"Место работы"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, work_company: e.target.value })}
-              value={applicEdit?.work_company} />
-            <TextField
-              label={"Год начало работы"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, work_start_year: Number(e.target.value) })}
-              value={applicEdit?.work_start_year} />
-            <TextField
-              label={"Отдел"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, work_department: e.target.value })}
-              value={applicEdit?.work_department} />
-            <TextField
-              label={"Рабочая позиция"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, work_position: e.target.value })}
-              value={applicEdit?.work_position} />
-            <TextField
-              label={"Рабочая специализация"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, work_specialization: e.target.value })}
-              value={applicEdit?.work_specialization} />
-            <TextField
-              label={"Публичная организация"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, public_organizations: e.target.value })}
-              value={applicEdit?.public_organizations} />
-            <TextField
-              label={"АНТОК city"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, antok_city: e.target.value })}
-              value={applicEdit?.antok_city} />
-            <TextField
-              label={"Научные интересы"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, science_interests: e.target.value })}
-              value={applicEdit?.science_interests} />
-            <TextField
-              label={"Тема конференции"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, conf_topic: e.target.value })}
-              value={applicEdit?.conf_topic} />
-            <TextField
-              label={"Секция конференции"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, conf_section: e.target.value })}
-              value={applicEdit?.conf_section} />
-            <TextField
-              label={"Соавторы конференции"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, conf_coauthors: e.target.value })}
-              value={applicEdit?.conf_coauthors} />
-            <TextField
-              label={"Тип участия"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, participation_type: e.target.value })}
-              value={applicEdit?.participation_type} />
-            <TextField
-              label={"Создана"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, created_at: e.target.value })}
-              value={applicEdit?.created_at} />
-            <TextField
-              label={"Обновлена"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, updated_at: e.target.value })}
-              value={applicEdit?.updated_at} />
-            <TextField
-              label={"Нужна компенсация"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, need_compensation: Boolean(e.target.value) })}
-              value={applicEdit?.need_compensation} />
-            <TextField
-              label={"ИНН"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, inn: e.target.value })}
-              value={applicEdit?.inn} />
-            <TextField
-              label={"СНИЛС"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, snils: e.target.value })}
-              value={applicEdit?.snils} />
-            <TextField
-              label={"Регистрация"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, registration: e.target.value })}
-              value={applicEdit?.registration} />
-            <TextField
-              label={"Рабочий телефон"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, phone_work: e.target.value })}
-              value={applicEdit?.phone_work} />
-            <TextField
-              label={"Домашний телефон"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, phone_home: e.target.value })}
-              value={applicEdit?.phone_home} />
-            <TextField
-              label={"Ученое звание"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, uch_zvanie: e.target.value })}
-              value={applicEdit?.uch_zvanie} />
-            <TextField
-              label={"Город работы"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, work_city: e.target.value })}
-              value={applicEdit?.work_city} />
-            <TextField
-              label={"Страна работы"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, work_country: e.target.value })}
-              value={applicEdit?.work_country} />
-            <TextField
-              label={"ACAD позиция"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, acad_position: e.target.value })}
-              value={applicEdit?.acad_position} />
-            <TextField
-              label={"Место работы сокращенно"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, work_company_short: e.target.value })}
-              value={applicEdit?.work_company_short} />
-            <TextField
-              label={"Нужен отель"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, need_hotel: e.target.value })}
-              value={applicEdit?.need_hotel} />
-            <TextField
-              label={"Год рождения"}
-              required
-              variant="standard"
-              fullWidth
-              margin='normal'
-              onChange={(e) => setApplicEdit({ ...applicEdit, birth_year: Number(e.target.value) })}
-              value={applicEdit?.birth_year} />
-
-
-            {isEditBtn
-              ?
-              <div>
-                <Button variant="contained" onClick={acceptEdit} sx={{ mr: 5 }}>Изменить</Button>
-                <Button variant="contained" onClick={cancelEdit}>Отмена</Button>
-              </div>
-              :
-              <Button variant="contained" onClick={handleForm} >Создать</Button>
-            }
+            <CardContent >
+              <TextField
+                autoFocus
+                label={"ФИО"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, fio: e.target.value })}
+                value={applicEdit?.fio} />
+              <TextField
+                label={"ФИО на английском"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, fio_eng: e.target.value })}
+                value={applicEdit?.fio_eng} />
+              <TextField
+                label={"День Рождения"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, birth_date: e.target.value })}
+                value={applicEdit?.birth_date} />
+              <TextField
+                label={"Пол"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, sex: e.target.value })}
+                value={applicEdit?.sex} />
+              <TextField
+                label={"Адресс"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, post_address: e.target.value })}
+                value={applicEdit?.post_address} />
+              <TextField
+                label={"Email"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, email: e.target.value })}
+                value={applicEdit?.email} />
+              <TextField
+                label={"Телефон"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, phones: e.target.value })}
+                value={applicEdit?.phones} />
+              <TextField
+                label={"Университет"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, edu_institute: e.target.value })}
+                value={applicEdit?.edu_institute} />
+              <TextField
+                label={"Адрес университета"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, edu_institute_address: e.target.value })}
+                value={applicEdit?.edu_institute_address} />
+              <TextField
+                label={"Специализация в университете"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, edu_specialization: e.target.value })}
+                value={applicEdit?.edu_specialization} />
+              <TextField
+                label={"Ученая степень"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, uch_stepen: e.target.value })}
+                value={applicEdit?.uch_stepen} />
+              <TextField
+                label={"Место работы"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, work_company: e.target.value })}
+                value={applicEdit?.work_company} />
+              <TextField
+                label={"Год начало работы"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, work_start_year: Number(e.target.value) })}
+                value={applicEdit?.work_start_year} />
+              <TextField
+                label={"Отдел"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, work_department: e.target.value })}
+                value={applicEdit?.work_department} />
+              <TextField
+                label={"Рабочая позиция"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, work_position: e.target.value })}
+                value={applicEdit?.work_position} />
+              <TextField
+                label={"Рабочая специализация"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, work_specialization: e.target.value })}
+                value={applicEdit?.work_specialization} />
+              <TextField
+                label={"Публичная организация"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, public_organizations: e.target.value })}
+                value={applicEdit?.public_organizations} />
+              <TextField
+                label={"АНТОК city"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, antok_city: e.target.value })}
+                value={applicEdit?.antok_city} />
+              <TextField
+                label={"Научные интересы"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, science_interests: e.target.value })}
+                value={applicEdit?.science_interests} />
+              <TextField
+                label={"Тема конференции"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, conf_topic: e.target.value })}
+                value={applicEdit?.conf_topic} />
+              <TextField
+                label={"Секция конференции"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, conf_section: e.target.value })}
+                value={applicEdit?.conf_section} />
+              <TextField
+                label={"Соавторы конференции"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, conf_coauthors: e.target.value })}
+                value={applicEdit?.conf_coauthors} />
+              <TextField
+                label={"Тип участия"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, participation_type: e.target.value })}
+                value={applicEdit?.participation_type} />
+              <TextField
+                label={"Создана"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, created_at: e.target.value })}
+                value={applicEdit?.created_at} />
+              <TextField
+                label={"Обновлена"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, updated_at: e.target.value })}
+                value={applicEdit?.updated_at} />
+              <TextField
+                label={"Нужна компенсация"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, need_compensation: Boolean(e.target.value) })}
+                value={applicEdit?.need_compensation} />
+              <TextField
+                label={"ИНН"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, inn: e.target.value })}
+                value={applicEdit?.inn} />
+              <TextField
+                label={"СНИЛС"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, snils: e.target.value })}
+                value={applicEdit?.snils} />
+              <TextField
+                label={"Регистрация"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, registration: e.target.value })}
+                value={applicEdit?.registration} />
+              <TextField
+                label={"Рабочий телефон"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, phone_work: e.target.value })}
+                value={applicEdit?.phone_work} />
+              <TextField
+                label={"Домашний телефон"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, phone_home: e.target.value })}
+                value={applicEdit?.phone_home} />
+              <TextField
+                label={"Ученое звание"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, uch_zvanie: e.target.value })}
+                value={applicEdit?.uch_zvanie} />
+              <TextField
+                label={"Город работы"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, work_city: e.target.value })}
+                value={applicEdit?.work_city} />
+              <TextField
+                label={"Страна работы"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, work_country: e.target.value })}
+                value={applicEdit?.work_country} />
+              <TextField
+                label={"ACAD позиция"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, acad_position: e.target.value })}
+                value={applicEdit?.acad_position} />
+              <TextField
+                label={"Место работы сокращенно"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, work_company_short: e.target.value })}
+                value={applicEdit?.work_company_short} />
+              <TextField
+                label={"Нужен отель"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, need_hotel: e.target.value })}
+                value={applicEdit?.need_hotel} />
+              <TextField
+                label={"Год рождения"}
+                required
+                variant="standard"
+                fullWidth
+                margin='normal'
+                onChange={(e) => setApplicEdit({ ...applicEdit, birth_year: Number(e.target.value) })}
+                value={applicEdit?.birth_year} />
+            </CardContent>
+            <CardActions sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+              {isEditBtn
+                ?
+                <div>
+                  <Button variant="contained" onClick={acceptEdit} sx={{ mr: 5 }}>Изменить</Button>
+                  <Button variant="contained" onClick={cancelEdit}>Отмена</Button>
+                </div>
+                :
+                <Button variant="contained" onClick={handleForm} >Создать</Button>
+              }
+            </CardActions>
           </Card>
         </Box>
       </Container>
