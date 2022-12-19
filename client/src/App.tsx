@@ -62,10 +62,9 @@ const App = () => {
 
   useEffect(() => {
     fetchData()
-  }, [/* applications */])
+  }, [applicEdit])
 
   const applicItem = Object.keys(applic)
-
 
   const postApplic = async () => {
     await axios.post("http://localhost:8000/api/applics", applicEdit)
@@ -99,12 +98,11 @@ const App = () => {
     setIsEditBtn(false)
   }
 
-
+  console.log('123');
 
   const deleteApplic = async (id: number) => {
     await axios.delete(`http://localhost:8000/api/applics/${id}`)
   }
-
 
   return (
     <div className="App">
