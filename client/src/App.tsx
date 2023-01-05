@@ -98,8 +98,6 @@ const App = () => {
     setIsEditBtn(false)
   }
 
-  console.log('123');
-
   const deleteApplic = async (id: number) => {
     await axios.delete(`http://localhost:8000/api/applics/${id}`)
   }
