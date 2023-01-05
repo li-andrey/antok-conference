@@ -8,11 +8,12 @@
     "mongoose": "^6.8.1"
   },
   "scripts": {
-    "build": "npx tsc",
     "start:app": "cd client && npm start",
     "start:server": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
     "start": "run-p --race start:server start:app",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mongo": "sudo mongod --dbpath=/var/lib/mongodb/ --logpath /dev/null"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
