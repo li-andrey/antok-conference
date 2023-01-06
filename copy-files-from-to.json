@@ -1,0 +1,10 @@
+{"copyFilesSettings": {
+    "whenFileExists": "overwrite"
+    },
+    "copyFiles": [
+        {
+            "from": "/client/build/**/*",
+            "to": "/dist/build/"
+        }
+    ]
+}
