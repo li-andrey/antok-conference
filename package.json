@@ -11,11 +11,12 @@
   "scripts": {
     "start:app": "cd client && npm start",
     "start:server": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "start:m": "run-p --race mongo start:server",
     "start:dev": "run-p --race start:server start:app",
     "start:prod": "npm run build && npm run start:server",
     "build": "cd client && npm run build && copy-files-from-to --config ../copy-files-from-to.json",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "mongo": "mongod --dbpath=/var/lib/mongodb/ --logpath /dev/null"
+    "mongo": "sudo mongod --dbpath=/var/lib/mongodb/ --logpath /dev/null"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
