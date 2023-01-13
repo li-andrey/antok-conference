@@ -38,18 +38,13 @@ jobs:
         run: |
             mkdir -p ~/.ssh/
             echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
-            Host ec2
-              HostName $REMOTE_HOST
-              User $REMOTE_USER
-              IdentityFile private_key
-              StrictHostKeyChecking no 
-            END 
+            ssh -o StrictHostKeyChecking=no -i private_key ${REMOTE_USER}@${REMOTE_HOST} '
               cd /home/ubuntu/antok-conference && 
               git checkout main && 
               git fetch --all && 
               git reset --hard origin/main && 
               git pull origin main
-            END
+            '
 
 
 
