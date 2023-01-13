@@ -32,22 +32,18 @@ jobs:
 
       - name: Deploy to Server 1
         run: |
-            mkdir -p ~/.ssh/
-            echo "$SSH_KEY" > ~/.ssh/github-actions-key
-            chmod 600 ~/.ssh/github-actions-key
-            cat >>~/.ssh/config <<END
-            Host ec2
-              HostName $SSH_HOST
-              User $SSH_USER
-              IdentityFile ~/.ssh/github-actions-key
-              StrictHostKeyChecking no
-            END
+            echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+            ssh -o StrictHostKeyChecking=no -i private_key ${REMOTE_USER}@${REMOTE_HOST} '
+            cd /home/ubuntu/antok-conference && 
+            git checkout main && 
+            git fetch --all && 
+            git reset --hard origin/main && 
+            git pull origin main
         env:
             SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
             REMOTE_HOST: ${{ secrets.HOST_DNS }}
             REMOTE_USER: ${{ secrets.USER_NAME }}
-      - name: List home directory
-        run: ssh ec2 'ls -la'
+
 
 
 
