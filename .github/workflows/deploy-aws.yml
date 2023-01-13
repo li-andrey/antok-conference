@@ -31,13 +31,24 @@ jobs:
         run: npm run build --if-present
 
       - name: Deploy to Server 1
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.HOST_DNS }}
-          REMOTE_USER: ${{ secrets.USER_NAME }}
-          TARGET: ${{ secrets.TARGET_DIR }}
-          EXCLUDE: "/dist/, /node_modules/"
+        run: |
+            mkdir -p ~/.ssh/
+            echo "$SSH_KEY" > ~/.ssh/github-actions-key
+            chmod 600 ~/.ssh/github-actions-key
+            cat >>~/.ssh/config <<END
+            Host ec2
+              HostName $SSH_HOST
+              User $SSH_USER
+              IdentityFile ~/.ssh/github-actions-key
+              StrictHostKeyChecking no
+            END
+            env:
+            SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+            REMOTE_HOST: ${{ secrets.HOST_DNS }}
+            REMOTE_USER: ${{ secrets.USER_NAME }}
+            TARGET: ${{ secrets.TARGET_DIR }}
+            EXCLUDE: "/dist/, /node_modules/"
+        
   
 
 
