@@ -14,13 +14,22 @@ jobs:
     steps:
       - name: Checkout the files
         uses: actions/checkout@v2
+        
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+          
+      - name: Install npm dependencies
+        run: npm install
+        
+      - name: Run build task
+        run: npm run build --if-present
 
       - name: Deploy to Server 1
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          ARGS: "-rlgoDzvc -i --delete"
-          SOURCE: "dist/"
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
           REMOTE_USER: ${{ secrets.USER_NAME }}
           TARGET: ${{ secrets.TARGET_DIR }}
