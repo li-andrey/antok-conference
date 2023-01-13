@@ -37,20 +37,19 @@ jobs:
             REMOTE_USER: ${{ secrets.USER_NAME }}
         run: |
             mkdir -p ~/.ssh/
-            echo "$SSH_PRIVATE_KEY" > ~/.ssh/github-actions-key && chmod 600 ~/.ssh/github-actions-key
-            cat >>~/.ssh/config <<END
+            echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
             Host ec2
               HostName $REMOTE_HOST
               User $REMOTE_USER
-              IdentityFile ~/.ssh/github-actions-key
+              IdentityFile private_key
               StrictHostKeyChecking no 
-            END '
+            END 
               cd /home/ubuntu/antok-conference && 
               git checkout main && 
               git fetch --all && 
               git reset --hard origin/main && 
               git pull origin main
-            '
+            END
 
 
 
