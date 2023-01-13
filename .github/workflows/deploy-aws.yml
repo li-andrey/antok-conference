@@ -37,7 +37,7 @@ jobs:
             REMOTE_USER: ${{ secrets.USER_NAME }}
         run: |
             mkdir -p ~/.ssh/
-            echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+            echo ${SSH_PRIVATE_KEY} > private_key && chmod 600 private_key
             ssh -o StrictHostKeyChecking=no -i private_key ${REMOTE_USER}@${REMOTE_HOST} '
               cd /home/ubuntu/antok-conference && 
               git checkout main && 
