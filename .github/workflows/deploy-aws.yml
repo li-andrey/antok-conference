@@ -25,7 +25,7 @@ jobs:
         
       - name: Install npm dependencies client
         run: |
-          cd /home/ubuntu/antok-conference/client &&
+          cd /antok-conference/client/ &&
           npm install
         
       - name: Run build task
