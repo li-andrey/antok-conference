@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to EC2 on master branch push
+    name: Deploy to EC2 on main branch push
     runs-on: ubuntu-latest
 
     steps:
@@ -29,21 +29,21 @@ jobs:
         
       - name: Run build task
         run: npm run build --if-present
-
+        
       - name: Deploy to Server 1
-        run: |
-            echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
-            ssh -o StrictHostKeyChecking=no -i private_key ${REMOTE_USER}@${REMOTE_HOST} '
-            cd /home/ubuntu/antok-conference && 
-            git checkout main && 
-            git fetch --all && 
-            git reset --hard origin/main && 
-            git pull origin main
         env:
             SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
             REMOTE_HOST: ${{ secrets.HOST_DNS }}
             REMOTE_USER: ${{ secrets.USER_NAME }}
-
+        run: |
+            echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+            ssh -o StrictHostKeyChecking=no -i private_key ${REMOTE_USER}@${REMOTE_HOST} '
+              cd /home/ubuntu/antok-conference && 
+              git checkout main && 
+              git fetch --all && 
+              git reset --hard origin/main && 
+              git pull origin main
+            '
 
 
 
