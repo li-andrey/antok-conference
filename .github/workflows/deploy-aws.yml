@@ -36,8 +36,9 @@ jobs:
             REMOTE_HOST: ${{ secrets.HOST_DNS }}
             REMOTE_USER: ${{ secrets.USER_NAME }}
         run: |
-          echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${REMOTE_USER}@${REMOTE_HOST} '
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/github-actions-key
+          chmod 600 ~/.ssh/github-actions-key
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/github-actions-key ${REMOTE_USER}@${REMOTE_HOST} '
           
             #Now we have got the access of EC2 and we will start the deploy .
             cd /home/ubuntu/antok-conference &&
