@@ -42,17 +42,14 @@ jobs:
               IdentityFile ~/.ssh/github-actions-key
               StrictHostKeyChecking no
             END
-              cd /home/ubuntu/antok-conference &&
-              git checkout main &&
-              git fetch --all &&
-              git reset --hard origin/main &&
-              git pull origin main
         env:
             SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
             REMOTE_HOST: ${{ secrets.HOST_DNS }}
             REMOTE_USER: ${{ secrets.USER_NAME }}
         
-  
+      - name: List home directory
+        run: ssh ec2 'ls -la'
+
 
 
 
