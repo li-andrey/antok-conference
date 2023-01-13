@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { TApplic } from '../../types/TApplic';
 import { Box, Button, Card, CardActions, CardContent, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
-// import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
-// // import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
+import EditIcon from '@mui/icons-material/Edit';
 import { InitialApplic } from './types/InitialApplic';
 // import CreateApplic from './components/CreateApplic';
 
@@ -130,12 +130,12 @@ const App = () => {
                 <TableRow key={el.user_id}>
                   <TableCell sx={{ pl: 0 }}>
                     <Button onClick={() => deleteApplic(el.user_id)}>
-                      {/* <DeleteForeverRoundedIcon color="success" /> */}
+                      <DeleteForeverRoundedIcon color="success" />
                     </Button>
                   </TableCell>
                   <TableCell sx={{ pl: 0 }}>
                     <Button onClick={() => handleEditApplic(el.user_id)}>
-                      {/* <EditIcon color="success" /> */}
+                      <EditIcon color="success" />
                     </Button>
                   </TableCell>
                   <TableCell>{el.user_id}</TableCell>
