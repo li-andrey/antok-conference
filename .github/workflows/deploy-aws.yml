@@ -43,4 +43,9 @@ jobs:
             git fetch --all &&
             git reset --hard origin/main &&
             git pull origin main
+            npm install
+            cd /client
+            npm install
+            cd ../
+            npm run start:m
           '
