@@ -31,25 +31,26 @@ jobs:
         run: npm run build --if-present
         
       - name: Deploy to Server 1
-        uses: appleboy/ssh-action@master
-        with:
-            key: ${{ secrets.KEY }}
-            host: ${{ secrets.HOST }}
-            username: ${{ secrets.USER_NAME }}
-            port: ${{ secrets.PORT }}
-            script: |
-                curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-                . ~/.nvm/nvm.sh
-                nvm install 16
-                npm install -g pm2
-                cd ~/antok-conference
-                git pull origin main
-                npm install
-                cd /client
-                npm install
-                cd ../
-                npm run build
-                pm2 restart api
-              
+        env:
+            SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+            REMOTE_HOST: ${{ secrets.HOST_DNS }}
+            REMOTE_USER: ${{ secrets.USER_NAME }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/github-actions-key
+          chmod 600 ~/.ssh/github-actions-key
+          cat >>~/.ssh/config <<END
+            Host ec2
+            HostName $REMOTE_HOST
+            User $REMOTE_USER
+            IdentityFile ~/.ssh/github-actions-key
+            PubKeyAuthentication yes
+            StrictHostKeyChecking no
+          END 
+          
+      - name: List home directory
+        run: ssh ec2 'ls -la'
+
+
 
 
