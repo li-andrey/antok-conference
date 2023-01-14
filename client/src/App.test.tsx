@@ -1,9 +1,5 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
-import FirstComponent from './components/ApplicItem';
-
-
 
 test('renders hakuna', () => {
   render(<App />);
