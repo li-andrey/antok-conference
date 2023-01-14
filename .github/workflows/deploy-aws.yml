@@ -19,17 +19,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          
-      - name: Install npm dependencies
-        run: npm install
-        
-      - name: Install npm dependencies client
-        working-directory: /home/runner/work/antok-conference/antok-conference/client
-        run: npm install
-        
-      - name: Run build task
-        run: npm run build --if-present
-        
+
       - name: Deploy to Server 1
         env:
             SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
@@ -44,7 +34,7 @@ jobs:
             git reset --hard origin/main &&
             git pull origin main
             npm install
-            cd /client
+            cd /home/ubuntu/antok-conference/client
             npm install
             cd ../
             npm run start:m
