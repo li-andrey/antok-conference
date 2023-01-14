@@ -36,6 +36,6 @@ jobs:
             npm install
             cd /home/ubuntu/antok-conference/client
             npm install
-            cd ../
-            npm run start:m
+            cd ../ 
+            npm run build
           '
