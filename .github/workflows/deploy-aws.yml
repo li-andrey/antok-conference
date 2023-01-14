@@ -19,7 +19,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-
+          
+      - name: Install dependences server
+        run: npm install
+        
+      - name: Install dependences client
+        working-directory: /home/runner/work/antok-conference/antok-conference/client
+        run: npm install
+        
+      - name: Build
+        run: npm run build
+          
       - name: Deploy to Server 1
         env:
             SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
